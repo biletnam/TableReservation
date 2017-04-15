@@ -22,19 +22,23 @@ Route::any('/main', function(){
 Route::get('user/{id}', 'UserController@show');
 
 //------------------------------------------------------
-Route::get('/table/show', 'TableController@list');
-Route::get('/table/show/{id}', 'TableController@get');
+Route::resource('tables', 'TableController');
 
-Route::get('/table/create', 'TableController@create');
-Route::get('/table/create/{name}', 'TableController@create');
-Route::post('/table', 'TableController@create');
-Route::post('/table/{name}', 'TableController@create');
+// Route::get('/table/show', 'TableController@list');
+// Route::get('/table/show/{id}', 'TableController@get');
+//
+// Route::get('/table/create', 'TableController@create');
+// Route::get('/table/create/{name}', 'TableController@create');
+// Route::post('/table', 'TableController@create');
+// Route::post('/table/{name}', 'TableController@create');
+//
+// Route::get('/table/update/{id}/{name}', 'TableController@update');
+// Route::put('/table/{id}/{name}', 'TableController@update');
+//
+// Route::get('/table/delete/{id}', 'TableController@delete');
+// Route::delete('/table/{id}', 'TableController@delete');
 
-Route::get('/table/update/{id}/{name}', 'TableController@update');
-Route::put('/table/{id}/{name}', 'TableController@update');
 
-Route::get('/table/delete/{id}', 'TableController@delete');
-Route::delete('/table/{id}', 'TableController@delete');
 
 //------------------------------------------------------
 Route::get('/guest/show', 'GuestController@list');
@@ -69,4 +73,3 @@ Route::delete('/reservation/{id}', 'ReservationController@delete');
 //-------------------------------------------------------
 //Admin
 Route::get('/admin', 'AdminController@main');
-Route::get('/admin/tables', 'AdminController@showTables');

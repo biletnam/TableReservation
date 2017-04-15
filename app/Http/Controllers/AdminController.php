@@ -12,9 +12,5 @@ class AdminController extends Controller
   {
      return view('admin.main');
   }
-  public function showTables(Request $request)
-  {
-     return view('admin.show_tables', ['tables' => App\Table::all()]);
-  }
 
 }
