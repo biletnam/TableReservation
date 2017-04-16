@@ -23,7 +23,8 @@
         </li> -->
 
         <li><a href="#">Reservations</a></li>
-        
+        <li><a href="/guests">Guests</a></li>
+
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container-fluid -->

@@ -37,6 +37,13 @@ class TableController extends Controller
    */
   public function store(Request $request)
   {
+    if(!isset($request->name) || !isset($request->seats) ){
+      return view('layouts.results', [
+        'redirect' => '/tables',
+        'msg'=>'Table information missing',
+        'status'=>'error'
+      ]);
+    }
     $table = new Table;
     $table->name = ($request->name)? $request->name: 'Table';
     $table->seats = ($request->seats)? $request->seats: 0;
@@ -80,6 +87,13 @@ class TableController extends Controller
    */
   public function update(Request $request, $id)
   {
+      if(!isset($request->name) || !isset($request->seats) ){
+        return view('layouts.results', [
+          'redirect' => '/tables',
+          'msg'=>'Table information missing',
+          'status'=>'error'
+        ]);
+      }
       $table = Table::find($id);
       $table->name =  $request->name;
       $table->seats = $request->seats;

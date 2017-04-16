@@ -1,38 +1,40 @@
 @extends('layouts.app')
 
-@section('title', 'Tables')
+@section('title', 'Guests')
 
 @section('content')
 
   <div class="panel panel-success">
     <div class="panel-heading">
-      <span>Tables</span>
-      <span class='pull-right'><a href="/tables/create">New Table</a></span>
+      <span>Guests</span>
+      <span class='pull-right'><a href="/guests/create">New Guest</a></span>
     </div>
     <table class="table">
       <tr>
 
         <th>Name</th>
-        <th>Max Seats</th>
+        <th>Email</th>
+        <th>Phone</th>
         <th>Edit</th>
         <th>Delete</th>
       </tr>
-    @foreach ($tables as $table)
+    @foreach ($guests as $guest)
       <tr>
 
-        <td>{{$table->name}}</td>
-        <td>{{$table->seats}}</td>
+        <td>{{$guest->name}}</td>
+        <td>{{$guest->email}}</td>
+        <td>{{$guest->phone}}</td>
         <td>
           <button class="btn btn-xs btn-default">
-          <a href="/tables/{{$table->id}}/edit">
+          <a href="/guests/{{$guest->id}}/edit">
             <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
           </a>
           </button>
         </td>
         <td>
 
-          {!!  Form::model($table, [
-            'url' => '/tables/' . $table->id,
+          {!!  Form::model($guest, [
+            'url' => '/guests/' . $guest->id,
             'method' => 'delete',
             'style' => 'display: inline-block'
             ]) !!}
