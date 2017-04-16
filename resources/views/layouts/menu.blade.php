@@ -22,7 +22,7 @@
             </ul>
         </li> -->
 
-        <li><a href="#">Reservations</a></li>
+        <li><a href="/reservations">Reservations</a></li>
         <li><a href="/guests">Guests</a></li>
 
       </ul>

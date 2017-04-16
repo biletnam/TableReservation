@@ -64,7 +64,10 @@ class TableController extends Controller
    */
   public function show($id)
   {
-      return Table::find($id);
+      return view('layouts.show', [
+        'title'=>'Table',
+        'model' => Table::find($id)
+      ]);
   }
 
   /**

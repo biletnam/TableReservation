@@ -20,7 +20,11 @@
     @foreach ($tables as $table)
       <tr>
 
-        <td>{{$table->name}}</td>
+        <td>
+          <a href="/tables/{{$table->id}}">
+            {{$table->name}}
+          </a>
+        </td>
         <td>{{$table->seats}}</td>
         <td>
           <button class="btn btn-xs btn-default">

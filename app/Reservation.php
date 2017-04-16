@@ -8,17 +8,17 @@ class Reservation extends Model
 {
   protected $table = 'reservations';
 
-  protected $fillable = [
-      'reservation_time', 'party_size', 'duration',
-  ];
+  // protected $fillable = [
+  //     'reservation_time', 'party_size', 'duration',
+  // ];
 
   public function guest()
   {
-     return $this->hasOne(Guest::class);
+     return $this->hasOne(Guest::class, 'id');
   }
 
   public function table()
   {
-      return $this->hasOne(Table::class);
+      return $this->hasOne(Table::class, 'id');
   }
 }

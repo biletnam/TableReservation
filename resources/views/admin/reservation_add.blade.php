@@ -1,16 +1,16 @@
 @extends('layouts.app')
 
-@section('title', 'Tables - Add')
+@section('title', 'Reservation - Add')
 
 @section('content')
 
-  {!!  Form::model('App/Table', [
-    'url' => '/tables/',
+  {!!  Form::model('App/Reservation', [
+    'url' => '/reservations/',
     'method' => 'post',
     'class' => 'form-horizontal'
     ]) !!}
     <div class="form-group ">
-      <h3 class="col-sm-offset-4 col-sm-4">Add New Table</h3>
+      <h3 class="col-sm-offset-4 col-sm-4">Add New Reservation</h3>
     </div>
 
   <div class="form-group">

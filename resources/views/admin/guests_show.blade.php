@@ -21,7 +21,11 @@
     @foreach ($guests as $guest)
       <tr>
 
-        <td>{{$guest->name}}</td>
+        <td>
+          <a href="/guests/{{$guest->id}}">
+            {{$guest->name}}
+          </a>
+        </td>
         <td>{{$guest->email}}</td>
         <td>{{$guest->phone}}</td>
         <td>
