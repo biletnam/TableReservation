@@ -22,8 +22,23 @@
             </ul>
         </li> -->
 
-        <li><a href="/reservations">Reservations</a></li>
-        <li><a href="/guests">Guests</a></li>
+        <!-- <li><a href="/reservations">Reservations</a></li> -->
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reservations <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/reservations">View All</a></li>
+              <li><a href="/reservations/create">Add Reservation</a></li>
+            </ul>
+        </li>
+        <!-- <li><a href="/guests">Guests</a></li> -->
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Guests <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/guests">View All</a></li>
+              <li><a href="/guests/create">Add Guest</a></li>
+              <li><a href="/guests/find">Search</a></li>
+            </ul>
+        </li>
 
       </ul>
     </div><!--/.nav-collapse -->

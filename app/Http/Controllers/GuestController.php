@@ -144,5 +144,21 @@ class GuestController extends Controller
       }
 
     }
+    public function find(){
+      return view('admin/guest_find');
+    }
+    public function findByName(Request $request){
+      //var_dump($name);
+      $guests = Guest::whereRaw("name LIKE ?", ['%'.$request->name.'%'])->get();
+      return view('admin.guests_show', ['guests' => $guests]);
+    }
+    public function findByPhone(Request $request){
+      $guests = Guest::whereRaw("phone LIKE ?", ['%'.$request->phone.'%'])->get();
+      return view('admin.guests_show', ['guests' => $guests]);
+    }
+    public function findByEmail(Request $request){
+      $guests = Guest::whereRaw("email LIKE ?", ['%'.$request->email.'%'])->get();
+      return view('admin.guests_show', ['guests' => $guests]);
+    }
 
 }

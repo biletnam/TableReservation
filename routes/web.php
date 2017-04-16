@@ -17,10 +17,16 @@ Route::get('/', function () {
 
 //------------------------------------------------------
 Route::resource('tables', 'TableController');
+
+Route::get('guests/find', 'GuestController@find');
+Route::get('guests/find/name', 'GuestController@findByName');
+Route::get('guests/find/email', 'GuestController@findByEmail');
+Route::get('guests/find/phone', 'GuestController@findByPhone');
 Route::resource('guests', 'GuestController');
 
 //Route::get('reservations/calendar', 'ReservationController@calendar');
 Route::get('reservations/date/{date}', 'ReservationController@reservationByDate');
+//Route::get('reservations/create/:tab', 'ReservationController');
 Route::resource('reservations', 'ReservationController');
 
 //------------------------------------------------------
