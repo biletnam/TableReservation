@@ -15,7 +15,8 @@ class CreateReservationsTable extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->increments('id');
-            $table->dateTime('reservation_time');
+            $table->dateTime('start_time');
+            $table->dateTime('end_time');
             $table->smallInteger('party_size')->default(0);
 
             $table->integer('guest_id')->unsigned();

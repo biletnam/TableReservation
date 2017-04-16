@@ -22,13 +22,22 @@
         <td>{{$table->name}}</td>
         <td>{{$table->seats}}</td>
         <td>
-          <a href="/tables/{{$table->id}}/edit">Edit</a> |
+          <button class="btn btn-xs btn-default">
+          <a href="/tables/{{$table->id}}/edit">
+            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+          </a>
+          </button>
+        </td>
+        <td>
 
           {!!  Form::model($table, [
             'url' => '/tables/' . $table->id,
-            'method' => 'delete'
+            'method' => 'delete',
+            'style' => 'display: inline-block'
             ]) !!}
-            {!! Form::submit('Delete'); !!}
+            <button type="submit" class="btn btn-xs btn-danger">
+              <span class="glyphicon glyphicon-remove" aria-hidden="true"/></span>
+            </button>
           {!! Form::close() !!}
 
         </td>

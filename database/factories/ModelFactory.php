@@ -37,7 +37,8 @@ $factory->define(App\Guest::class, function (Faker\Generator $faker) {
 });
 $factory->define(App\Reservation::class, function (Faker\Generator $faker) {
     return [
-        'reservation_time' => $faker->dateTimeBetween($startDate = '-1 months', $endDate = 'now', $timezone = date_default_timezone_get()),
+        'start_time' => $faker->dateTimeBetween($startDate = '-1 months', $endDate = 'now', $timezone = date_default_timezone_get()),
+        'end_time' => $faker->dateTimeBetween($startDate = '-1 months', $endDate = 'now', $timezone = date_default_timezone_get()),
         'party_size' => $faker->numberBetween($min = 1, $max = 10),
         'guest_id' => function () {
             return factory(App\Guest::class)->create();
