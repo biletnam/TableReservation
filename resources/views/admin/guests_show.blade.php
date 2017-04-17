@@ -13,8 +13,8 @@
       <tr>
 
         <th>Name</th>
-        <th>Email</th>
         <th>Phone</th>
+        <th>Email</th>
         <th>Edit</th>
         <th>Delete</th>
       </tr>
@@ -26,8 +26,8 @@
             {{$guest->name}}
           </a>
         </td>
-        <td>{{$guest->email}}</td>
         <td>{{$guest->phone}}</td>
+        <td>{{$guest->email}}</td>
         <td>
           <button class="btn btn-xs btn-default">
           <a href="/guests/{{$guest->id}}/edit">

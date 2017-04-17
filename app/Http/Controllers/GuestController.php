@@ -37,7 +37,7 @@ class GuestController extends Controller
      */
     public function store(Request $request)
     {
-      if(!isset($request->name) || !isset($request->phone) || !isset($request->email) ){
+      if(!isset($request->name, $request->phone)){
         return view('layouts.results', [
           'redirect' => '/guests',
           'msg'=>'Guest information missing',
@@ -46,7 +46,7 @@ class GuestController extends Controller
       }
       $guest = new Guest;
       $guest->name = $request->name;
-      $guest->email = $request->email;
+      $guest->email = (isset($request->email)) ? $request->email : 'N/A';
       $guest->phone = $request->phone;
       $guest->save();
 

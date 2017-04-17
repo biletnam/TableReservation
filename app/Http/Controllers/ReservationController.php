@@ -7,6 +7,7 @@ use DateTime;
 use DateInterval;
 use App\Reservation;
 use App\Table;
+use App\Guest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -24,8 +25,8 @@ class ReservationController extends Controller
     //$reservations = Reservation::all()->orderBy('start_time', 'DESC')->get();
 
     foreach ($reservations as $reservation) {
-      $table = Reservation::find($reservation->id)->table;
-      $guest = Reservation::find($reservation->id)->guest;
+      $table = Table::find($reservation->table_id);
+      $guest = Guest::find($reservation->guest_id);
       if(isset($table) && isset($guest)){
         $reservation->table = $table;
         $reservation->$guest = $guest;
@@ -37,14 +38,49 @@ class ReservationController extends Controller
     return view('admin.reservations_show', ['reservations' => $reservations]);
   }
 
+  public function selectDate(Request $request)
+  {
+    if (!isset($request->date)){
+      return view('admin.reservation_add_selectDate');
+    }
+
+    $today = new DateTime();
+    $start = new DateTime($request->date);
+    $end = new DateTime($request->date);
+    $end->add(new DateInterval('P1D'));
+
+    $reservations = Reservation::whereRaw('start_time >= ? AND end_time < ? ORDER BY start_time ASC', [
+      $start->format('Y-m-d'), $end->format('Y-m-d')
+    ])->get();
+    return view('admin.reservation_add_selectDate', [
+      'tables'=>Table::all(),
+      'reservations'=>$reservations,
+      'date'=>$start,
+      'party'=>isset($request->party)? $request->party: 0
+    ]);
+  }
   /**
    * Show the form for creating a new resource.
    *
    * @return \Illuminate\Http\Response
    */
-  public function create()
+  public function create($date, $party, $id)
   {
-    return view('admin.reservation_add');
+
+    $temp = explode('-', $id);
+    $hour = floor($temp[0]/100);
+    $minutes = ($temp[0]%100/100*60);
+    $start_time = new DateTime($date);
+    $start_time->add(new DateInterval('PT' . $hour . 'H'));
+    $start_time->add(new DateInterval('PT' . $minutes . 'M'));
+    $temp_time = clone $start_time;
+    $end_time = $temp_time->add(new DateInterval('PT90M'));
+    return view('admin.reservation_add',[
+      'start_time' => $start_time,
+      'end_time' => $end_time,
+      'party' => $party,
+      'tableId' => $temp[1]
+    ]);
   }
 
   /**
@@ -55,23 +91,43 @@ class ReservationController extends Controller
    */
   public function store(Request $request)
   {
-    // if(!isset($request->name) || !isset($request->seats) ){
-    //   return view('layouts.results', [
-    //     'redirect' => '/tables',
-    //     'msg'=>'Table information missing',
-    //     'status'=>'error'
-    //   ]);
-    // }
-    // $table = new Table;
-    // $table->name = ($request->name)? $request->name: 'Table';
-    // $table->seats = ($request->seats)? $request->seats: 0;
-    // $table->save();
-    //
-    // return view('layouts.results', [
-    //   'redirect' => '/tables',
-    //   'msg'=>'New Table Added',
-    //   'status'=>'success'
-    // ]);
+    if(!isset($request->table_id, $request->party,
+      $request->start_time, $request->end_time,
+      $request->customer_name, $request->customer_phone) ){
+      return view('layouts.results', [
+        'redirect' => '/reservations',
+        'msg'=>'Missing information',
+        'status'=>'error'
+      ]);
+    }
+    $end_time = new DateTime($request->date . " " . $request->end_time);
+    $start_time = new DateTime($request->start_time);
+    if($start_time > $end_time){
+      return view('layouts.results', [
+        'redirect' => '/reservations',
+        'msg'=>'End time is before start time',
+        'status'=>'error'
+      ]);
+    }
+    $guest = new Guest;
+    $guest->name = $request->customer_name;
+    $guest->phone = $request->customer_phone;
+    $guest->email = (isset($request->customer_email)) ? $request->customer_email : 'N/A';
+    $guest->save();
+
+    $reservation = new Reservation;
+    $reservation->start_time = $start_time;
+    $reservation->end_time = $end_time;
+    $reservation->party_size = $request->party;
+    $reservation->guest_id = $guest->id;
+    $reservation->table_id = $request->table_id;
+    $reservation->save();
+
+    return view('layouts.results', [
+      'redirect' => '/reservations',
+      'msg'=>'New Guest and Reservation Added',
+      'status'=>'success'
+    ]);
   }
 
   /**
@@ -82,7 +138,16 @@ class ReservationController extends Controller
    */
   public function show($id)
   {
-      //return view('layouts.show', ['model' => Table::find($id)]);
+    $reservation = Reservation::find($id);
+    $guest = Guest::find($reservation->guest_id);
+    $reservation->guest_name = $guest->name;
+    $reservation->guest_phone = $guest->phone;
+    $reservation->guest_email = $guest->email;
+
+      return view('layouts.show', [
+        'title'=>'Reservation',
+        'model' => $reservation
+      ]);
   }
 
   /**
@@ -94,6 +159,11 @@ class ReservationController extends Controller
   public function edit($id)
   {
       //return view('admin.table_edit', ['table' => Table::find($id)]);
+      return view('layouts.results', [
+        'redirect' => '/reservations',
+        'msg'=>'Feature not available. Please delete reservation and create a new one.',
+        'status'=>'warning'
+      ]);
   }
 
   /**
@@ -177,32 +247,5 @@ class ReservationController extends Controller
       'date' => $start->format('M d, Y')
     ]);
   }
-  // public function list(Request $request)
-  // {
-  //    return Reservation::all();
-  // }
-  //
-  // public function get(Request $request)
-  // {
-  //    return Reservation::find($request->id);
-  // }
-  //
-  // public function create(Request $request)
-  // {
-  //   $reservation = new Reservation;
-  //   $reservation->name = ($request->name)? $request->name: 'Guest';
-  //   $reservation->email = ($request->email)? $request->email: 'n/a';
-  //   $reservation->phone = ($request->phone)? $request->phone: 'n/a';
-  //   $reservation->save();
-  //
-  //   return $reservation;
-  // }
-  // public function update(Reservation $request){
-  //   $reservation = Reservation::find($request->id);
-  //   $reservation->name = $request->name;
-  //   $reservation->save();
-  //
-  //   return $reservation;
-  // }
 
 }

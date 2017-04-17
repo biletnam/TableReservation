@@ -15,14 +15,14 @@
 
     @foreach ($reservations as $reservation)
 
-      <?php $date = date_format( new DateTime($reservation->start_time), 'M d, Y' ) ?>
+      <?php $date = date_format( new DateTime($reservation->start_time), 'l, M d, Y' ) ?>
 
       <?php
         if(!in_array( $date, $dates)){
           array_push($dates, $date);
       ?>
       <tr class="active">
-        <td colspan="7" class='text-center'>
+        <td colspan="8" class='text-center'>
           <a href="/reservations/date/{{date_format( new DateTime($reservation->start_time), 'Y-m-d' )}}">
             {{ $date }}
           </a>
@@ -35,6 +35,7 @@
         <th>Guest</th>
         <th>Party</th>
 
+        <th>Detail</th>
         <th>Edit</th>
         <th>Delete</th>
       </tr>
@@ -48,6 +49,13 @@
         <td><a href="/tables/{{$reservation->table->id}}">{{$reservation->table->name}}</a></td>
         <td><a href="/guests/{{$reservation->guest->id}}">{{$reservation->guest->name}}</a></td>
         <td>{{$reservation->party_size}}</td>
+        <td>
+          <button class="btn btn-xs btn-default">
+          <a href="/reservations/{{$reservation->id}}">
+            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+          </a>
+          </button>
+        </td>
         <td>
           <button class="btn btn-xs btn-default">
           <a href="/reservations/{{$reservation->id}}/edit">

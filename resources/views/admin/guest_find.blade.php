@@ -10,6 +10,9 @@
     'url' => '/guests/find/name',
     ]) !!}
   <div class="input-group col-xs-12 col-sm-8 col-sm-offset-2">
+    <span class="input-group-addon">
+      Name:
+    </span>
     {!! Form::text('name', null, ['class' => 'form-control']) !!}
     <span class="input-group-btn">
       {!! Form::submit('Find by Name', ['class' => 'btn btn-success']) !!}
@@ -22,6 +25,9 @@
     'url' => '/guests/find/phone',
     ]) !!}
   <div class="input-group col-xs-12 col-sm-8 col-sm-offset-2">
+    <span class="input-group-addon">
+      Phone:
+    </span>
     {!! Form::text('phone', null, ['class' => 'form-control']) !!}
     <span class="input-group-btn">
       {!! Form::submit('Find by Phone', ['class' => 'btn btn-success']) !!}
@@ -34,6 +40,9 @@
     'url' => '/guests/find/email',
     ]) !!}
   <div class="input-group col-xs-12 col-sm-8 col-sm-offset-2">
+    <span class="input-group-addon">
+      Email:
+    </span>
     {!! Form::text('email', null, ['class' => 'form-control']) !!}
     <span class="input-group-btn">
       {!! Form::submit('Find by Email', ['class' => 'btn btn-success']) !!}

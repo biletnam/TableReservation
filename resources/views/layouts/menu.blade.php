@@ -27,7 +27,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reservations <span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li><a href="/reservations">View All</a></li>
-              <li><a href="/reservations/create">Add Reservation</a></li>
+              <li><a href="/reservations/create/selectDate">Add Reservation</a></li>
             </ul>
         </li>
         <!-- <li><a href="/guests">Guests</a></li> -->

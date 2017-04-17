@@ -26,7 +26,8 @@ Route::resource('guests', 'GuestController');
 
 //Route::get('reservations/calendar', 'ReservationController@calendar');
 Route::get('reservations/date/{date}', 'ReservationController@reservationByDate');
-//Route::get('reservations/create/:tab', 'ReservationController');
+Route::get('reservations/create/selectDate', 'ReservationController@selectDate');
+Route::get('reservations/create/{date}/{party}/{id}', 'ReservationController@create');
 Route::resource('reservations', 'ReservationController');
 
 //------------------------------------------------------

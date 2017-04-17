@@ -17,6 +17,7 @@
         <th>Guest</th>
         <th>Party</th>
 
+        <th>Detail</th>
         <th>Edit</th>
         <th>Delete</th>
       </tr>
@@ -28,6 +29,13 @@
         <td><a href="/tables/{{$reservation->table->id}}">{{$reservation->table->name}}</a></td>
         <td><a href="/guests/{{$reservation->guest->id}}">{{$reservation->guest->name}}</a></td>
         <td>{{$reservation->party_size}}</td>
+        <td>
+          <button class="btn btn-xs btn-default">
+          <a href="/reservations/{{$reservation->id}}">
+            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+          </a>
+          </button>
+        </td>
         <td>
           <button class="btn btn-xs btn-default">
           <a href="/reservations/{{$reservation->id}}/edit">
@@ -69,13 +77,19 @@
       @for( $i=8; $i<20 ; $i++ )
 
       <tr>
-        <td><?php echo ($i > 12)? $i-12 . ":00PM" : $i . ":00AM" ?></td>
+        <td>
+          {{ ($i > 12)? $i-12 . ":00" : $i . ":00" }}
+          {{ ($i >= 12)? "PM" : "AM" }}
+        </td>
         @foreach($tables as $table)
           <td id='{{$i . "00-" . $table->id}}'></td>
         @endforeach
       </tr>
       <tr>
-        <td><?php echo ($i > 12)? $i-12 . ":30PM" : $i . ":30AM" ?></td>
+        <td>
+          {{ ($i > 12)? $i-12 . ":30" : $i . ":30" }}
+          {{ ($i >= 12)? "PM" : "AM" }}
+        </td>
         @foreach($tables as $table)
           <td id='{{$i . "50-" . $table->id}}'></td>
         @endforeach
