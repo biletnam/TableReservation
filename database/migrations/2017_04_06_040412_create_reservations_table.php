@@ -15,9 +15,11 @@ class CreateReservationsTable extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->increments('id');
+            $table->date('date');
             $table->dateTime('start_time');
             $table->dateTime('end_time');
             $table->smallInteger('party_size')->default(0);
+            $table->string('status')->default('requested');
 
             $table->integer('guest_id')->unsigned();
             $table->foreign('guest_id')->references('id')->on('guests');

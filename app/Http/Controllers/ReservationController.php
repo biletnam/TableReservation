@@ -8,6 +8,7 @@ use DateInterval;
 use App\Reservation;
 use App\Table;
 use App\Guest;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -30,8 +31,8 @@ class ReservationController extends Controller
       if(isset($table) && isset($guest)){
         $reservation->table = $table;
         $reservation->$guest = $guest;
-      }
     }
+  }
 
   //  print('<pre>');
   //  var_dump($reservations);
@@ -76,6 +77,7 @@ class ReservationController extends Controller
     $temp_time = clone $start_time;
     $end_time = $temp_time->add(new DateInterval('PT90M'));
     return view('admin.reservation_add',[
+      'date' => $start_time->format('Y-m-d'),
       'start_time' => $start_time,
       'end_time' => $end_time,
       'party' => $party,
@@ -116,6 +118,7 @@ class ReservationController extends Controller
     $guest->save();
 
     $reservation = new Reservation;
+    $reservation->date = $start_time->format('Y-m-d');
     $reservation->start_time = $start_time;
     $reservation->end_time = $end_time;
     $reservation->party_size = $request->party;
@@ -158,12 +161,7 @@ class ReservationController extends Controller
    */
   public function edit($id)
   {
-      //return view('admin.table_edit', ['table' => Table::find($id)]);
-      return view('layouts.results', [
-        'redirect' => '/reservations',
-        'msg'=>'Feature not available. Please delete reservation and create a new one.',
-        'status'=>'warning'
-      ]);
+      return view('admin.reservation_edit', ['reservation'=>Reservation::find($id)]);
   }
 
   /**
@@ -175,31 +173,31 @@ class ReservationController extends Controller
    */
   public function update(Request $request, $id)
   {
-      // if(!isset($request->name) || !isset($request->seats) ){
-      //   return view('layouts.results', [
-      //     'redirect' => '/tables',
-      //     'msg'=>'Table information missing',
-      //     'status'=>'error'
-      //   ]);
-      // }
-      // $table = Table::find($id);
-      // $table->name =  $request->name;
-      // $table->seats = $request->seats;
-      // $result = $table->save();
-      //
-      // if($result){
-      //   return view('layouts.results', [
-      //     'redirect' => '/tables',
-      //     'msg'=>'Table Updated: ' . $table->name,
-      //     'status'=>'success'
-      //   ]);
-      // }else{
-      //   return view('layouts.results', [
-      //     'redirect' => '/tables',
-      //     'msg'=>'Update Failed',
-      //     'status'=>'error'
-      //   ]);
-      // }
+      if(!isset($request->party_size, $request->status) ){
+        return view('layouts.results', [
+          'redirect' => '/reservations',
+          'msg'=>'Reservation information missing',
+          'status'=>'error'
+        ]);
+      }
+      $reservation = Reservation::find($id);
+      $reservation->party_size =  $request->party_size;
+      $reservation->status = $request->status;
+      $result = $reservation->save();
+
+      if($result){
+        return view('layouts.results', [
+          'redirect' => '/reservations',
+          'msg'=>'Reservation Updated: ',
+          'status'=>'success'
+        ]);
+      }else{
+        return view('layouts.results', [
+          'redirect' => '/reservations',
+          'msg'=>'Update Failed',
+          'status'=>'error'
+        ]);
+      }
   }
 
   /**
@@ -228,23 +226,38 @@ class ReservationController extends Controller
 
   }
   public function calendar(){
-    return view('admin.calendar');
+
+    $reservations = DB::table('reservations')
+                     ->select(DB::raw('count(*) as count, date'))
+                    // ->where('date', '<>', 1)
+                     ->groupBy(['date'])
+                     ->orderBy('date', 'ASC')
+                     ->get();
+    // $reservations = [];
+    // foreach ($results as $k=>$r) {
+    //   $reservations = array_merge_recursive($reservations,
+    //   [ $r->date =>
+    //     [ 'count' => $r->count,
+    //      'status' => $r->status ]
+    //   ]);
+    // }
+    return view('admin.reservations_calendar', ['reservations' => $reservations]);
+
   }
   public function reservationByDate($date){
     //list reservations for single date
 
-    $start = new DateTime($date);
-    $end = new DateTime($date);
-    $end->add(new DateInterval('P1D'));
+    $date = new DateTime($date);
 
-    $reservations = Reservation::whereRaw('start_time >= ? AND end_time < ? ORDER BY start_time ASC', [
-      $start->format('Y-m-d'), $end->format('Y-m-d')
+    $reservations = Reservation::whereRaw('date = ?  ORDER BY start_time ASC', [
+      $date->format('Y-m-d')
     ])->get();
-
+//   echo  "<pre>";
+// var_dump($reservations);
     return view('admin.reservation_by_date', [
       'reservations' => $reservations,
       'tables' => Table::all(),
-      'date' => $start->format('M d, Y')
+      'date' => $date->format('M d, Y')
     ]);
   }
 

@@ -40,6 +40,7 @@ $factory->define(App\Reservation::class, function (Faker\Generator $faker) {
   $end_time = clone $start_time;
   $end_time = $end_time->add(new DateInterval('PT90M'));
     return [
+        'date' => $start_time->format('Y-m-d'),
         'start_time' => $start_time,
         'end_time' => $end_time,
         'party_size' => $faker->numberBetween($min = 1, $max = 10),
