@@ -11,16 +11,16 @@ class AdminController extends Controller
 {
   public function main(Request $request)
   {
-    $statuses = DB::table('reservations')
-       ->select(DB::raw('count(*) as count, status'))
-      // ->where('date', '<>', 1)
-       ->groupBy('status')
-       ->get();
-    $status = [];
-    foreach ($statuses as $s) {
-      $status += [$s->status => $s->count];
+    $reservations = App\Reservation::where('status', 'requested')->get();
+    foreach ($reservations as $reservation) {
+      $table = App\Table::find($reservation->table_id);
+      $guest = App\Guest::find($reservation->guest_id);
+      if(isset($table) && isset($guest)){
+        $reservation->table = $table;
+        $reservation->$guest = $guest;
+      }
     }
-     return view('admin.main', ['status'=> $status]);
+    return view('admin.main', ['reservations'=> $reservations]);
   }
 
 }

@@ -8,7 +8,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/">Table Reservations</a>
+      <a class="navbar-brand" href="/admin">Table Reservations</a>
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
@@ -27,6 +27,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reservations <span class="caret"></span></a>
             <ul class="dropdown-menu">
               <li><a href="/reservations">View All</a></li>
+              <li><a href="/reservations/date/{{ date_format(new DateTime, 'Y-m-d')}}">Today's Reservations</a></li>
               <li><a href="/reservations/create/selectDate">Add Reservation</a></li>
             </ul>
         </li>

@@ -4,43 +4,62 @@
 
 @section('content')
 
-<div class='col-xs-6 col-sm-8 col-md-6 '>
-  <div class="panel panel-success">
-    <div class="panel-heading">
-      <span>Reservations</span>
+<div class='col-xs-12 '>
+  <div class="panel panel-warning">
+    <div class="panel-heading text-center">
+      <span>Pending Reservations</span>
     </div>
     <table class="table">
       <tr>
-        <th>Status</th>
-        <th>Total</th>
+        <th>Date</th>
+        <th>Start Time</th>
+        <th>End Time</th>
+        <th>Name</th>
+        <th>Phone</th>
+        <th>Party</th>
+        <th>Confirm</th>
+        <th>Edit</th>
       </tr>
+      @foreach($reservations as $reservation)
       <tr>
-        <td>Requested</td>
+        <td>{{date_format(new DateTime($reservation->date),'l, M d, Y')}}</td>
+        <td>{{date_format(new DateTime($reservation->start_time),'H:ia')}}</td>
+        <td>{{date_format(new DateTime($reservation->end_time),'H:ia')}}</td>
+        <td>{{$reservation->guest->name}}</td>
+        <td>{{$reservation->guest->phone}}</td>
+        <td>{{$reservation->party_size}}</td>
         <td>
-          <?php $requested = (isset($status['requested']))?$status['requested']:0 ?>
-          @if( $requested > 0)
-          <button class="btn btn-warning" type="button">
-            {{$requested = isset($status['requested'])?$status['requested']:0}}
-            <span class="glyphicon glyphicon-alert"></span>
+          <button class="btn btn-xs btn-default">
+          <a href="/reservations/{{$reservation->id}}/confirm">
+            <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+          </a>
           </button>
-          @else
-          0
-          @endif
+        </td>
+        <td>
+          <button class="btn btn-xs btn-default">
+          <a href="/reservations/{{$reservation->id}}/edit">
+            <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+          </a>
+          </button>
         </td>
       </tr>
-      <tr>
-        <td>Confirmed</td>
-        <td>{{isset($status['confirmed'])?$status['confirmed']:0}}</td>
-      </tr>
-      <tr>
-        <td>Seated</td>
-        <td>{{isset($status['seated'])?$status['seated']:0}}</td>
-      </tr>
-      <tr>
-        <td>Released</td>
-        <td>{{isset($status['released'])?$status['released']:0}}</td>
-      </tr>
+      @endforeach
+    </table>
+  </div>
+</div>
 
+<div class='col-xs-6 col-sm-6 col-md-6 '>
+  <div class="panel panel-info">
+    <div class="panel-heading text-center">
+      <span>Clean Up Options</span>
+    </div>
+    <table class="table text-center">
+      <tr>
+        <td><a href="/reservations/remove/old">Delete Old Reservations</a></td>
+      </tr>
+      <tr>
+        <td><a href="/guests/remove/old">Delete Guests w/o Reservations</a></td>
+      </tr>
     </table>
   </div>
 </div>

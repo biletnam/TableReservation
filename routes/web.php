@@ -28,8 +28,11 @@ Route::get('reservations/calendar', 'ReservationController@calendar');
 Route::get('reservations/date/{date}', 'ReservationController@reservationByDate');
 Route::get('reservations/create/selectDate', 'ReservationController@selectDate');
 Route::get('reservations/create/{date}/{party}/{id}', 'ReservationController@create');
+Route::get('reservations/{id}/confirm', 'ReservationController@confirm');
 Route::resource('reservations', 'ReservationController');
 
 //-------------------------------------------------------
 //Admin
 Route::get('/admin', 'AdminController@main');
+Route::get('guests/remove/old', 'GuestController@removeOld');
+Route::get('reservations/remove/old', 'ReservationController@removeOld');

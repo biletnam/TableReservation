@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Guest;
+use App\Reservation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class GuestController extends Controller
@@ -159,6 +161,35 @@ class GuestController extends Controller
     public function findByEmail(Request $request){
       $guests = Guest::whereRaw("email LIKE ?", ['%'.$request->email.'%'])->get();
       return view('admin.guests_show', ['guests' => $guests]);
+    }
+    public function removeOld(){
+//       DELETE FROM A
+// WHERE (field1, field2, ..., fieldN) IN
+// ( SELECT *
+//   FROM B
+// ) ;
+      $reservations = Reservation::all();
+      $guest_ids = [];
+      foreach ($reservations as $reservation) {
+        array_push($guest_ids, $reservation->id);
+      }
+
+      //var_dump($guest_ids);
+      $guests = Guest::all();
+      $count =0;
+      foreach ($guests as $guest) {
+        if (!in_array($guest->id, $guest_ids)) {
+          Guest::destroy($guest->id);
+          $count++;
+        }
+      }
+
+      //$result = DB::table('guests')->where('id', '!=', $guest_ids)->delete();
+      return view('layouts.results', [
+        'redirect' => '/guests',
+        'msg'=> $count . ' Old Guests Removed',
+        'status'=>'success'
+      ]);
     }
 
 }

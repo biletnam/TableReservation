@@ -80,11 +80,11 @@
     <table class="table text-center" id="schedule">
       <tr>
         <td>
-          Table
+          Table (Max Seats)
         </td>
         @foreach($tables as $table)
         <td>
-         {{ $table->id}}
+         {{ $table->id}} ({{$table->seats}})
         </td>
         @endforeach
       </tr>
@@ -92,20 +92,20 @@
 
       <tr>
         <td>
-          {{ ($i > 12)? $i-12 . ":00" : $i . ":00" }}
+          {{ ($i > 12)? sprintf("%'.02d\n", ($i-12) ) . ":00" : $i . ":00" }}
           {{ ($i >= 12)? "PM" : "AM" }}
         </td>
         @foreach($tables as $table)
-          <td id='{{$i . "00-" . $table->id}}'></td>
+          <td id='<?php printf("%'.02d", $i )?>00-{{$table->id}}'></td>
         @endforeach
       </tr>
       <tr>
         <td>
-          {{ ($i > 12)? $i-12 . ":30" : $i . ":30" }}
+          {{ ($i > 12)? sprintf("%'.02d\n", ($i-12) ) . ":30" : $i . ":30" }}
           {{ ($i >= 12)? "PM" : "AM" }}
         </td>
         @foreach($tables as $table)
-          <td id='{{$i . "50-" . $table->id}}'></td>
+          <td id='<?php printf("%'.02d", $i )?>30-{{$table->id}}'></td>
         @endforeach
       </tr>
       @endfor
@@ -120,13 +120,14 @@
     @foreach($reservations as $reservation)
     //while start time <= end time
       <?php
-        $start = intval(date_format( new DateTime($reservation->start_time), 'h')) . "00";
-        $end = intval(date_format( new DateTime($reservation->end_time), 'h')) . "00";
+        $start_time = new DateTime($reservation->start_time);
+        $end_time = new DateTime($reservation->end_time);
       ?>
-      @while ($start <= $end )
-       <?php $cell = $start . '-' . $reservation->table_id  ?>
+
+      @while ($start_time < $end_time )
+       <?php $cell = $start_time->format('Hi') . '-' . $reservation->table_id  ?>
        $("#{{$cell}}").css('background', 'red');
-       {{$start += 50}};
+       <?php $start_time->add(new DateInterval('PT30M')) ?>;
       @endwhile
     @endforeach
 

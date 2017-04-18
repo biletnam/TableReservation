@@ -31,8 +31,8 @@ class ReservationController extends Controller
       if(isset($table) && isset($guest)){
         $reservation->table = $table;
         $reservation->$guest = $guest;
+      }
     }
-  }
 
   //  print('<pre>');
   //  var_dump($reservations);
@@ -226,10 +226,11 @@ class ReservationController extends Controller
 
   }
   public function calendar(){
+    $today = new DateTime();
 
     $reservations = DB::table('reservations')
                      ->select(DB::raw('count(*) as count, date'))
-                    // ->where('date', '<>', 1)
+                     ->where('date', '>=', $today->format('Y-m-d') )
                      ->groupBy(['date'])
                      ->orderBy('date', 'ASC')
                      ->get();
@@ -252,12 +253,39 @@ class ReservationController extends Controller
     $reservations = Reservation::whereRaw('date = ?  ORDER BY start_time ASC', [
       $date->format('Y-m-d')
     ])->get();
+    foreach ($reservations as $reservation) {
+      $table = Table::find($reservation->table_id);
+      $guest = Guest::find($reservation->guest_id);
+      if(isset($table) && isset($guest)){
+        $reservation->table = $table;
+        $reservation->$guest = $guest;
+      }
+    }
 //   echo  "<pre>";
 // var_dump($reservations);
     return view('admin.reservation_by_date', [
       'reservations' => $reservations,
       'tables' => Table::all(),
       'date' => $date->format('M d, Y')
+    ]);
+  }
+  public function removeOld(){
+    $date = new DateTime();
+    $result = DB::table('reservations')->where('date', '<', $date->format('Y-m-d'))->delete();
+    return view('layouts.results', [
+      'redirect' => '/reservations',
+      'msg'=> $result . ' Old Reservations Removed',
+      'status'=>'success'
+    ]);
+  }
+  public function confirm($id){
+    $reservation = Reservation::find($id);
+    $reservation->status = 'confirmed';
+    $reservation->save();
+    return view('layouts.results', [
+      'redirect' => '/admin',
+      'msg'=> 'Reservation Confirmed',
+      'status'=>'success'
     ]);
   }
 

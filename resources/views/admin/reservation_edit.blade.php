@@ -63,10 +63,19 @@
     </div>
   </div>
 
-  <div class="col-sm-offset-4 col-sm-4 text-right">
+  <div class="col-sm-offset-4 col-sm-4 text-right ">
     {!! Form::submit('Update Reservation', ['class' => 'btn btn-success']) !!}
   </div>
 
+  {!! Form::close() !!}
+
+  {!!  Form::model($reservation, [
+    'url' => '/reservations/' . $reservation->id,
+    'method' => 'delete'
+    ]) !!}
+    <div class="col-sm-offset-4 col-sm-4 text-left ">
+      {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+    </div>
   {!! Form::close() !!}
 
 @endsection
