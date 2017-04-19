@@ -26,7 +26,7 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reservations <span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="/reservations">View All</a></li>
+              <li><a href="/reservations/calendar">View All</a></li>
               <li><a href="/reservations/date/{{ date_format(new DateTime, 'Y-m-d')}}">Today's Reservations</a></li>
               <li><a href="/reservations/create/selectDate">Add Reservation</a></li>
             </ul>

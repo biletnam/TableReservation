@@ -4,7 +4,7 @@
 
 @section('content')
 
-<div class="col-xs-8 col-sm-6">
+<div class="col-xs-10 col-xs-offset-1 col-sm-8 col-sm-offset-2">
   <div class="panel panel-success">
     <div class="panel-heading">
       <span>Reservations</span>
