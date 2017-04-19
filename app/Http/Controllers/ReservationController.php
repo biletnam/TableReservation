@@ -8,6 +8,7 @@ use DateInterval;
 use App\Reservation;
 use App\Table;
 use App\Guest;
+use App\Hours;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -53,11 +54,23 @@ class ReservationController extends Controller
     $reservations = Reservation::whereRaw('start_time >= ? AND end_time < ? ORDER BY start_time ASC', [
       $start->format('Y-m-d'), $end->format('Y-m-d')
     ])->get();
+
+    $hours = Hours::where('day',$start->format('w'))->first();
+    if($hours->opened){
+      $hours->open = date_create($hours->open)->format('H') ;
+      $hours->close = date_create($hours->close)->format('H');
+    }else{
+      $hours->open = 0 ;
+      $hours->close = 0;
+    }
+
+
     return view('admin.reservation_add_selectDate', [
-      'tables'=>Table::all(),
+      'tables'=>Table::orderBy('seats', 'ASC')->get(),
       'reservations'=>$reservations,
       'date'=>$start,
-      'party'=>isset($request->party)? $request->party: 0
+      'party'=>isset($request->party)? $request->party: 0,
+      'hours'=>$hours
     ]);
   }
   /**
@@ -261,12 +274,21 @@ class ReservationController extends Controller
         $reservation->$guest = $guest;
       }
     }
-//   echo  "<pre>";
-// var_dump($reservations);
+
+    $hours = Hours::where('day',$date->format('w'))->first();
+    if($hours->opened){
+      $hours->open = date_create($hours->open)->format('H') ;
+      $hours->close = date_create($hours->close)->format('H');
+    }else{
+      $hours->open = 0;
+      $hours->close = 0;
+    }
+
     return view('admin.reservation_by_date', [
       'reservations' => $reservations,
-      'tables' => Table::all(),
-      'date' => $date->format('M d, Y')
+      'tables' => Table::orderBy('seats', 'ASC')->get(),
+      'date' => $date->format('M d, Y'),
+      'hours'=> $hours
     ]);
   }
   public function removeOld(){

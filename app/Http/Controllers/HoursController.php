@@ -110,6 +110,7 @@ class HoursController extends Controller
       $hours->day =  $request->day;
       $hours->open = $request->open;
       $hours->close = $request->close;
+      $hours->opened = $request->opened;
       $result = $hours->save();
 
       if($result){

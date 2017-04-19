@@ -15,6 +15,7 @@
         <th>Day</th>
         <th>Open</th>
         <th>Close</th>
+        <th></th>
       </tr>
     @foreach ($hours as $hour)
       <tr>
@@ -24,8 +25,13 @@
             {{$days[$hour->day]}}
           </a>
         </td>
+        @if($hour->opened)
         <td>{{ date_format(new DateTime($hour->open),'h:ia') }}</td>
         <td>{{ date_format(new DateTime($hour->close),'h:ia') }}</td>
+        @else
+          <td></td>
+          <td></td>
+        @endif
         <td>
           <button class="btn btn-xs btn-default">
           <a href="/hours/{{$hour->id}}/edit">
@@ -33,7 +39,7 @@
           </a>
           </button>
         </td>
-        <td>
+        <!-- <td>
 
           {!!  Form::model($hour, [
             'url' => '/hours/' . $hour->id,
@@ -45,7 +51,7 @@
             </button>
           {!! Form::close() !!}
 
-        </td>
+        </td> -->
       </tr>
     @endforeach
     </table>

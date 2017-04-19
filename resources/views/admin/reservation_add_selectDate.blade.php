@@ -56,7 +56,7 @@
       </td>
       @endforeach
     </tr>
-    @for( $i=8; $i<20 ; $i++ )
+    @for( $i=$hours->open; $i<$hours->close ; $i++ )
 
     <tr>
       <td>

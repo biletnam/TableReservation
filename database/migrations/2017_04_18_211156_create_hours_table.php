@@ -18,6 +18,7 @@ class CreateHoursTable extends Migration
             $table->smallInteger('day');
             $table->time('open');
             $table->time('close');
+            $table->boolean('opened')->default(true);
             $table->timestamps();
         });
     }

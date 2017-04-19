@@ -49,6 +49,17 @@
       {!! Form::time('close', $hours->close, ['class' => 'form-control']) !!}
     </div>
   </div>
+  <div class="form-group">
+    {!! Form::label('opened', 'Opened?', ['class'=> 'col-sm-4 control-label']) !!}
+    <div class="col-sm-4">
+      {{ Form::select('opened', [
+        '0' => 'No',
+        '1' => 'Yes'
+        ], $hours->opened, ['class' => 'form-control'] ) }}
+
+    </div>
+  </div>
+  </div>
   <div class="col-sm-offset-4 col-sm-4 text-right">
     {!! Form::submit('Update Hours', ['class' => 'btn btn-success']) !!}
   </div>
