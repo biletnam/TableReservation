@@ -19,7 +19,11 @@
       @foreach($reservations as $date)
       <?php $day = new DateTime($date->date)?>
       <tr>
-        <td>{{$day->format('l, M d, Y')}}</td>
+        <td>
+          <a href="/reservations/date/{{$day->format('Y-m-d')}}">
+          {{$day->format('l, M d, Y')}}
+          </a>
+        </td>
         <td>{{$date->count}}</td>
       </tr>
 

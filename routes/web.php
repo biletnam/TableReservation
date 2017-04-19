@@ -31,6 +31,8 @@ Route::get('reservations/create/{date}/{party}/{id}', 'ReservationController@cre
 Route::get('reservations/{id}/confirm', 'ReservationController@confirm');
 Route::resource('reservations', 'ReservationController');
 
+Route::resource('hours', 'HoursController');
+
 //-------------------------------------------------------
 //Admin
 Route::get('/admin', 'AdminController@main');

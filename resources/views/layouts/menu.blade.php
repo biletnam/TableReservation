@@ -40,6 +40,7 @@
               <li><a href="/guests/find">Search</a></li>
             </ul>
         </li>
+        <li><a href="/hours">Hours</a></li>
 
       </ul>
     </div><!--/.nav-collapse -->

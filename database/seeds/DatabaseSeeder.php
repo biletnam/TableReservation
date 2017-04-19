@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
     {
       factory(App\Table::class, 5)->create();
       //factory(App\Guest::class, 3)->create();
-      factory(App\Reservation::class, 3)->create();
+      factory(App\Reservation::class, 8)->create();
+      factory(App\Hours::class, 7)->create();
     }
 }

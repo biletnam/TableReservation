@@ -36,7 +36,8 @@ $factory->define(App\Guest::class, function (Faker\Generator $faker) {
     ];
 });
 $factory->define(App\Reservation::class, function (Faker\Generator $faker) {
-  $start_time = $faker->dateTimeBetween($startDate = 'now', $endDate = '7 days', $timezone = date_default_timezone_get());
+  $start_time = $faker->dateTimeBetween($startDate = 'now', $endDate = '3 days', $timezone = date_default_timezone_get());
+  $start_time->setTime($start_time->format('H'), 30);;
   $end_time = clone $start_time;
   $end_time = $end_time->add(new DateInterval('PT90M'));
     return [
@@ -51,4 +52,11 @@ $factory->define(App\Reservation::class, function (Faker\Generator $faker) {
             return App\Table::find(1);
         }
     ];
+});
+$factory->define(App\Hours::class, function(Faker\Generator $faker){
+  return [
+    'day' => rand(0,6),
+    'open'=> $faker->time($format = '08:00:00', $max = 'now'),
+    'close'=> $faker->time($format = '16:00:00', $max = 'now')
+  ];
 });

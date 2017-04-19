@@ -5,9 +5,9 @@
 @section('content')
 
 <div class='col-xs-12 '>
-  <div class="panel panel-warning">
+  <div class="panel panel-success">
     <div class="panel-heading text-center">
-      <span>Pending Reservations</span>
+      <span class="glyphicon glyphicon-alert"></span> Pending Reservations
     </div>
     <table class="table">
       <tr>
@@ -49,9 +49,31 @@
 </div>
 
 <div class='col-xs-6 col-sm-6 col-md-6 '>
-  <div class="panel panel-info">
+  <div class="panel panel-success">
     <div class="panel-heading text-center">
-      <span>Clean Up Options</span>
+      <span class="glyphicon glyphicon-time"></span> Hours of Operation
+    </div>
+    <table class="table">
+      <tr>
+        <th>Day</th>
+        <th>Open</th>
+        <th>Close</th>
+      </tr>
+      @foreach($hours as $hour)
+      <tr>
+        <td>{{ $days[$hour->day] }}</td>
+        <td>{{ date_format(new DateTime($hour->open),'H:ia') }}</td>
+        <td>{{ date_format(new DateTime($hour->close), 'H:ia') }}</td>
+      </tr>
+      @endforeach
+    </table>
+  </div>
+</div>
+
+<div class='col-xs-6 col-sm-6 col-md-6 '>
+  <div class="panel panel-success">
+    <div class="panel-heading text-center">
+      <span class="glyphicon glyphicon-trash"></span> Clean Up Options
     </div>
     <table class="table text-center">
       <tr>

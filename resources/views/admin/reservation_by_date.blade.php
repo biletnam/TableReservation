@@ -19,7 +19,11 @@
   <div class="panel panel-success">
     <div class="panel-heading">
       <span>Reservations for {{$date}}</span>
-      <span class='pull-right'><a href="/reservations/create/selectDate">Add Reservation</a></span>
+      <span class='pull-right'>
+        <a href="/reservations/create/selectDate?date={{date_format( new DateTime($date), 'm/d/Y')}}">
+          Add Reservation
+        </a>
+      </span>
     </div>
     <table class="table">
       <tr>
