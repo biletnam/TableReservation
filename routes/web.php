@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
 
 //------------------------------------------------------
@@ -38,3 +38,7 @@ Route::resource('hours', 'HoursController');
 Route::get('/admin', 'AdminController@main');
 Route::get('guests/remove/old', 'GuestController@removeOld');
 Route::get('reservations/remove/old', 'ReservationController@removeOld');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');

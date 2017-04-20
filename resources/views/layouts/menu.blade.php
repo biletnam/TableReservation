@@ -13,6 +13,7 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav navbar-right">
         <!-- <li class="active"><a href="#">Home</a></li> -->
+        @if (Auth::check())
         <li><a href="/tables">Tables</a></li>
         <!-- <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tables <span class="caret"></span></a>
@@ -41,6 +42,15 @@
             </ul>
         </li>
         <li><a href="/hours">Hours</a></li>
+        <li>
+          {!! Form::open(['method' => 'POST', 'route' => 'logout']) !!}
+          <button type="submit" class="btn " style="border:0;background-color:white;padding-top:14px;">Logout</button>
+          {!! Form::close() !!}
+        </li>
+        @else
+            <li><a href="{{ url('/login') }}">Login</a></li>
+            <li><a href="{{ url('/register') }}">Register</a></li>
+        @endif
 
       </ul>
     </div><!--/.nav-collapse -->

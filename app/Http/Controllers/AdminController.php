@@ -22,7 +22,7 @@ class AdminController extends Controller
     }
     return view('admin.main', [
       'reservations'=> $reservations,
-      'hours'=> App\Hours::orderBy('day', 'ASC')->get(),
+      'hours'=> App\Hours::where('opened', true)->orderBy('day', 'ASC')->get(),
       'days' => ['Sunday', "Monday", 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
     ]);
   }
