@@ -41,13 +41,13 @@ class ReservationController extends Controller
 
   //  print('<pre>');
   //  var_dump($reservations);
-    return view('admin.reservations_show', ['reservations' => $reservations]);
+    return view('reservation/index', ['reservations' => $reservations]);
   }
 
   public function selectDate(Request $request)
   {
     if (!isset($request->date)){
-      return view('admin.reservation_add_selectDate');
+      return view('reservation/add_selectDate');
     }
 
     $today = new DateTime();
@@ -69,7 +69,7 @@ class ReservationController extends Controller
     }
 
 
-    return view('admin.reservation_add_selectDate', [
+    return view('reservation/add_selectDate', [
       'tables'=>Table::orderBy('seats', 'ASC')->get(),
       'reservations'=>$reservations,
       'date'=>$start,
@@ -87,13 +87,13 @@ class ReservationController extends Controller
 
     $temp = explode('-', $id);
     $hour = floor($temp[0]/100);
-    $minutes = ($temp[0]%100/100*60);
+    $minutes = ($temp[0]%100);
     $start_time = new DateTime($date);
     $start_time->add(new DateInterval('PT' . $hour . 'H'));
     $start_time->add(new DateInterval('PT' . $minutes . 'M'));
     $temp_time = clone $start_time;
     $end_time = $temp_time->add(new DateInterval('PT90M'));
-    return view('admin.reservation_add',[
+    return view('reservation/create',[
       'date' => $start_time->format('Y-m-d'),
       'start_time' => $start_time,
       'end_time' => $end_time,
@@ -158,7 +158,7 @@ class ReservationController extends Controller
    */
   public function show($id)
   {
-    $reservation = Reservation::find($id);
+    $reservation = Reservation::find($id)->load('guest');
     $guest = Guest::find($reservation->guest_id);
     $reservation->guest_name = $guest->name;
     $reservation->guest_phone = $guest->phone;
@@ -178,7 +178,7 @@ class ReservationController extends Controller
    */
   public function edit($id)
   {
-      return view('admin.reservation_edit', ['reservation'=>Reservation::find($id)]);
+      return view('reservation/edit', ['reservation'=>Reservation::find($id)]);
   }
 
   /**
@@ -259,7 +259,7 @@ class ReservationController extends Controller
     //      'status' => $r->status ]
     //   ]);
     // }
-    return view('admin.reservations_calendar', ['reservations' => $reservations]);
+    return view('reservation/calendar', ['reservations' => $reservations]);
 
   }
   public function reservationByDate($date){
@@ -288,7 +288,7 @@ class ReservationController extends Controller
       $hours->close = 0;
     }
 
-    return view('admin.reservation_by_date', [
+    return view('reservation/by_date', [
       'reservations' => $reservations,
       'tables' => Table::orderBy('seats', 'ASC')->get(),
       'date' => $date->format('M d, Y'),

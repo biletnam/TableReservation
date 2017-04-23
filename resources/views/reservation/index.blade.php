@@ -59,7 +59,7 @@
       <tr class="{{$reservation->status}}">
         <td>{{ date_format( new DateTime($reservation->start_time), 'h:ia') }} </td>
         <td>{{ date_format( new DateTime($reservation->end_time), 'h:ia') }}</td>
-        <td><a href="/tables/{{$reservation->table->id}}">{{$reservation->table->name}}</a></td>
+        <td><a href="/tables/{{$reservation->table->name}}">{{$reservation->table->name}}</a></td>
         <td><a href="/guests/{{$reservation->guest->id}}">{{$reservation->guest->name}}</a></td>
         <td>{{$reservation->party_size}}</td>
         <td>{{$reservation->status}}</td>

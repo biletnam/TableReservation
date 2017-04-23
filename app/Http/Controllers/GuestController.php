@@ -22,7 +22,7 @@ class GuestController extends Controller
      */
     public function index()
     {
-        return view('admin.guests_show', ['guests' => Guest::all()]);
+        return view('guest/index', ['guests' => Guest::all()]);
     }
 
     /**
@@ -32,7 +32,7 @@ class GuestController extends Controller
      */
     public function create()
     {
-      return view('admin.guest_add');
+      return view('guest/add');
     }
 
     /**
@@ -85,7 +85,7 @@ class GuestController extends Controller
      */
     public function edit($id)
     {
-        return view('admin.guest_edit', ['guest' => Guest::find($id)]);
+        return view('guest/edit', ['guest' => Guest::find($id)]);
     }
 
     /**
@@ -151,20 +151,20 @@ class GuestController extends Controller
 
     }
     public function find(){
-      return view('admin/guest_find');
+      return view('guest/find');
     }
     public function findByName(Request $request){
       //var_dump($name);
       $guests = Guest::whereRaw("name LIKE ?", ['%'.$request->name.'%'])->get();
-      return view('admin.guests_show', ['guests' => $guests]);
+      return view('guest/index', ['guests' => $guests]);
     }
     public function findByPhone(Request $request){
       $guests = Guest::whereRaw("phone LIKE ?", ['%'.$request->phone.'%'])->get();
-      return view('admin.guests_show', ['guests' => $guests]);
+      return view('guest/index', ['guests' => $guests]);
     }
     public function findByEmail(Request $request){
       $guests = Guest::whereRaw("email LIKE ?", ['%'.$request->email.'%'])->get();
-      return view('admin.guests_show', ['guests' => $guests]);
+      return view('guest/index', ['guests' => $guests]);
     }
     public function removeOld(){
 //       DELETE FROM A
