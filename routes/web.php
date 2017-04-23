@@ -34,6 +34,7 @@ Route::resource('reservations', 'ReservationController');
 Route::resource('hours', 'HoursController');
 
 Route::resource('roles', 'RoleController');
+Route::resource('users', 'UserController');
 
 //-------------------------------------------------------
 //Admin

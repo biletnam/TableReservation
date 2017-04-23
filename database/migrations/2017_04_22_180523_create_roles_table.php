@@ -18,8 +18,8 @@ class CreateRolesTable extends Migration
             $table->string('name')->unique();
             $table->timestamps();
 
-            //set up foriegn key contraints
         });
+
     }
 
     /**
@@ -29,6 +29,8 @@ class CreateRolesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('roles');
+      //  Schema::disableForeignKeyConstraints();
+      Schema::dropIfExists('roles');
+      //  Schema::enableForeignKeyConstraints();
     }
 }

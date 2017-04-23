@@ -4,7 +4,7 @@
 
 @section('content')
 
-  {!!  Form::model('App/Roles', [
+  {!!  Form::model('App/Role', [
     'url' => '/roles/',
     'method' => 'post',
     'class' => 'form-horizontal'

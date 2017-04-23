@@ -42,6 +42,13 @@
             </ul>
         </li>
         <li><a href="/hours">Hours</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Users <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/users">View Users</a></li>
+              <li><a href="/roles">View Roles</a></li>
+            </ul>
+        </li>
         <li>
           {!! Form::open(['method' => 'POST', 'route' => 'logout']) !!}
           <button type="submit" class="btn " style="border:0;background-color:white;padding-top:14px;">Logout</button>

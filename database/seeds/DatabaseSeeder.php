@@ -15,7 +15,19 @@ class DatabaseSeeder extends Seeder
       //factory(App\Guest::class, 3)->create();
       factory(App\Reservation::class, 8)->create();
       //factory(App\Hours::class, 7)->create();
-      App\Role::create(['name'=>'admin']);
+      $role = App\Role::create(['name'=>'admin']);
+      App\Role::create(['name'=>'staff']);
+      $user = App\User::create([
+        'name'=>'admin',
+        'email'=>'admin@localhost',
+        'password'=>bcrypt('admin')
+      ]);
+      DB::table('role_user')->insert([
+        'user_id'=>$user->id,
+        'role_id'=>$role->id,
+        'created_at'=>date_create('now'),
+        'updated_at'=>date_create('now')
+      ]);
       App\Hours::create(['day'=>'0', 'open'=>'09:00:00', 'close'=>'21:00:00']);
       App\Hours::create(['day'=>'2', 'open'=>'09:00:00', 'close'=>'21:00:00']);
       App\Hours::create(['day'=>'1', 'open'=>'00:00:00', 'close'=>'00:00:00', 'opened'=>false]);

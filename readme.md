@@ -15,5 +15,6 @@ System to make and track table reservations for establishment
 
 ### Optional
 - generate sample data `php artisan db:seed`
+- default login: `admin@locahost` pw: `admin`
 
 built using Laravel Framework

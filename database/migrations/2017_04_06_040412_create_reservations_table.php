@@ -22,10 +22,12 @@ class CreateReservationsTable extends Migration
             $table->string('status')->default('requested');
 
             $table->integer('guest_id')->unsigned();
-            $table->foreign('guest_id')->references('id')->on('guests');
+            $table->foreign('guest_id')->references('id')->on('guests')
+              ->onDelete('cascade');
 
             $table->integer('table_id')->unsigned();
-            $table->foreign('table_id')->references('id')->on('tables');
+            $table->foreign('table_id')->references('id')->on('tables')
+              ->onDelete('cascade');
 
             $table->timestamps();
 
@@ -39,7 +41,6 @@ class CreateReservationsTable extends Migration
      */
     public function down()
     {
-      //Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('reservations');
     }
 }
