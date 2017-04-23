@@ -20,7 +20,7 @@ class HoursController extends Controller
    */
   public function index()
   {
-      return view('admin.hours_show', [
+      return view('hours/index', [
         'hours' => Hours::orderBy('day', 'ASC')->get(),
         'days' => ['Sunday', "Monday", 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
       ]);
@@ -33,7 +33,7 @@ class HoursController extends Controller
    */
   public function create()
   {
-    return view('admin.hours_add', [
+    return view('hours/create', [
       'days' => ['Sunday', "Monday", 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
     ]);
   }
@@ -88,7 +88,7 @@ class HoursController extends Controller
    */
   public function edit($id)
   {
-      return view('admin.hours_edit', [
+      return view('hours/edit', [
         'hours' => Hours::find($id),
         'days' => ['Sunday', "Monday", 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
       ]);

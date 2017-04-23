@@ -17,6 +17,7 @@
 
     {!! Form::label('day', 'Day ', ['class'=> 'col-sm-4 control-label']) !!}
     <div class="col-sm-4">
+      
       {{ Form::select('day', [
         '0' => 'Sunday',
         '1' => 'Monday',

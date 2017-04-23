@@ -3,7 +3,6 @@
 @section('title', 'Hours')
 
 @section('content')
-
   <div class="panel panel-success">
     <div class="panel-heading">
       <span>Hours</span>
