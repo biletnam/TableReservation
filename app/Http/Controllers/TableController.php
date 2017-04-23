@@ -20,7 +20,7 @@ class TableController extends Controller
    */
   public function index()
   {
-      return view('admin.tables_show', ['tables' => Table::all()]);
+      return view('table/index', ['tables' => Table::all()]);
   }
 
   /**
@@ -30,7 +30,7 @@ class TableController extends Controller
    */
   public function create()
   {
-    return view('admin.table_add');
+    return view('table/create');
   }
 
   /**
@@ -82,7 +82,7 @@ class TableController extends Controller
    */
   public function edit($id)
   {
-      return view('admin.table_edit', ['table' => Table::find($id)]);
+      return view('table/edit', ['table' => Table::find($id)]);
   }
 
   /**
