@@ -33,6 +33,8 @@ Route::resource('reservations', 'ReservationController');
 
 Route::resource('hours', 'HoursController');
 
+Route::resource('roles', 'RoleController');
+
 //-------------------------------------------------------
 //Admin
 Route::get('/admin', 'AdminController@main');
