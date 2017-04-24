@@ -69,7 +69,7 @@
     </table>
   </div>
 </div>
-
+@if(Auth::user()->roles->contains('name', 'admin'))
 <div class='col-xs-6 col-sm-6 col-md-6 '>
   <div class="panel panel-success">
     <div class="panel-heading text-center">
@@ -85,5 +85,6 @@
     </table>
   </div>
 </div>
+@endif
 
 @endsection

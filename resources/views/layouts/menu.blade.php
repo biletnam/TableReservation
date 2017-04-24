@@ -14,7 +14,9 @@
       <ul class="nav navbar-nav navbar-right">
         <!-- <li class="active"><a href="#">Home</a></li> -->
         @if (Auth::check())
+        @if(Auth::user()->roles->contains('name', 'admin'))
         <li><a href="/tables">Tables</a></li>
+        @endif
         <!-- <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tables <span class="caret"></span></a>
             <ul class="dropdown-menu">
@@ -32,7 +34,7 @@
               <li><a href="/reservations/create/selectDate">Add Reservation</a></li>
             </ul>
         </li>
-        <!-- <li><a href="/guests">Guests</a></li> -->
+        @if(Auth::user()->roles->contains('name', 'admin'))
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Guests <span class="caret"></span></a>
             <ul class="dropdown-menu">
@@ -41,7 +43,9 @@
               <li><a href="/guests/find">Search</a></li>
             </ul>
         </li>
+
         <li><a href="/hours">Hours</a></li>
+
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Users <span class="caret"></span></a>
             <ul class="dropdown-menu">
@@ -49,11 +53,20 @@
               <li><a href="/roles">View Roles</a></li>
             </ul>
         </li>
-        <li>
-          {!! Form::open(['method' => 'POST', 'route' => 'logout']) !!}
-          <button type="submit" class="btn " style="border:0;background-color:white;padding-top:14px;">Logout</button>
-          {!! Form::close() !!}
+        @endif
+
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->name}} <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="/">Change Password</a></li>
+              <li>
+                {!! Form::open(['method' => 'POST', 'route' => 'logout']) !!}
+                <button type="submit" class="btn" style="border:0;background-color:white;padding-top:14px;padding-left:20px;width:100%;text-align:left;">Logout</button>
+                {!! Form::close() !!}
+              </li>
+            </ul>
         </li>
+
         @else
             <li><a href="{{ url('/login') }}">Login</a></li>
             <li><a href="{{ url('/register') }}">Register</a></li>

@@ -27,7 +27,8 @@ class ReservationController extends Controller
    */
   public function index()
   {
-    $reservations = Reservation::orderBy('start_time', 'ASC')->get();
+    $reservations = Reservation::where('date','>=', date_format(date_create('now'),'Y-m-d') )
+      ->orderBy('start_time', 'ASC')->get();
     //$reservations = Reservation::all()->orderBy('start_time', 'DESC')->get();
 
     foreach ($reservations as $reservation) {
@@ -247,7 +248,7 @@ class ReservationController extends Controller
 
     $reservations = DB::table('reservations')
                      ->select(DB::raw('count(*) as count, date'))
-                     ->where('date', '>=', $today->format('Y-m-d') )
+                     ->where('date', '>=', date_format(date_create('now'),'Y-m-d') )
                      ->groupBy(['date'])
                      ->orderBy('date', 'ASC')
                      ->get();
