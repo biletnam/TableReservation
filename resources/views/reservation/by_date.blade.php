@@ -11,6 +11,10 @@
     color:red;
     text-decoration: line-through;
   }
+  .checked-in{
+    color:green;
+    font-weight: bolder;
+  }
 </style>
 @endsection
 

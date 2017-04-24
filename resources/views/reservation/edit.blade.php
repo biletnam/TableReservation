@@ -57,6 +57,7 @@
       {!! Form::select('status', [
         'requested' => 'requested',
         'confirmed' => 'confirmed',
+        'checked-in' => 'checked-in',
         'seated' => 'seated',
         'released' => 'released'
       ], $reservation->status, ['class' => 'form-control']) !!}

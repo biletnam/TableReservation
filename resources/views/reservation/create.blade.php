@@ -51,9 +51,6 @@
     </div>
 
 
-
-
-
   <div class="form-group">
     {!! Form::label('customer_name', 'Customer Name', ['class'=> 'col-sm-4 control-label']) !!}
     <div class="col-sm-4">
@@ -72,6 +69,22 @@
       {!! Form::email('customer_email', null, ['class' => 'form-control']) !!}
     </div>
   </div>
+
+
+
+  <div class="form-group">
+    {!! Form::label('status', 'Status', ['class'=> 'col-sm-4 control-label']) !!}
+    <div class="col-sm-4">
+      {!! Form::select('status', [
+        'requested' => 'requested',
+        'confirmed' => 'confirmed',
+        'checked-in' => 'checked-in',
+        'seated' => 'seated',
+        'released' => 'released'
+      ], 'confirmed', ['class' => 'form-control']) !!}
+    </div>
+  </div>
+
   <div class="col-sm-offset-4 col-sm-4 text-right">
     {!! Form::submit('Add Reservation', ['class' => 'btn btn-success']) !!}
   </div>

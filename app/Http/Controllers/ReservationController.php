@@ -142,6 +142,7 @@ class ReservationController extends Controller
     $reservation->party_size = $request->party;
     $reservation->guest_id = $guest->id;
     $reservation->table_id = $request->table_id;
+    $reservation->status = (isset($request->status))?$request->status:'requested';
     $reservation->save();
 
     return view('layouts.results', [
