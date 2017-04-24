@@ -58,7 +58,8 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->name}} <span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="/">Change Password</a></li>
+              <!-- <li><a href="/password/reset">Change Password</a></li> -->
+              <li><a href="/admin">Home</a></li>
               <li>
                 {!! Form::open(['method' => 'POST', 'route' => 'logout']) !!}
                 <button type="submit" class="btn" style="border:0;background-color:white;padding-top:14px;padding-left:20px;width:100%;text-align:left;">Logout</button>
@@ -69,7 +70,7 @@
 
         @else
             <li><a href="{{ url('/login') }}">Login</a></li>
-            <li><a href="{{ url('/register') }}">Register</a></li>
+            <!-- <li><a href="{{ url('/register') }}">Register</a></li> -->
         @endif
 
       </ul>
