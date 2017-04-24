@@ -32,7 +32,7 @@
           </button>
         </td>
         <td>
-
+          @if($role->name!='admin')
           {!!  Form::model($role, [
             'url' => '/roles/' . $role->id,
             'method' => 'delete',
@@ -42,6 +42,7 @@
               <span class="glyphicon glyphicon-remove" aria-hidden="true"/></span>
             </button>
           {!! Form::close() !!}
+          @endif
 
         </td>
       </tr>

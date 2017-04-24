@@ -16,6 +16,7 @@
         <th>Email</th>
         <th>Active</th>
         <th>Edit</th>
+        <th>Admin</th>
         <th>Delete</th>
       </tr>
     @foreach ($users as $user)
@@ -36,8 +37,14 @@
           </a>
           </button>
         </td>
+        <td>@if($user->roles->contains('name', 'admin'))
+          Y
+          @else
+          N
+          @endif
+        </td>
         <td>
-
+          @if(!$user->roles->contains('name', 'admin'))
           {!!  Form::model($user, [
             'url' => '/users/' . $user->id,
             'method' => 'delete',
@@ -47,7 +54,7 @@
               <span class="glyphicon glyphicon-remove" aria-hidden="true"/></span>
             </button>
           {!! Form::close() !!}
-
+          @endif
         </td>
       </tr>
     @endforeach
