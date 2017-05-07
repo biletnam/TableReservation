@@ -15,6 +15,9 @@
     color:green;
     font-weight: bolder;
   }
+  .slot-taken{
+    background:red;
+  }
 </style>
 @endsection
 
@@ -45,8 +48,8 @@
 
       @foreach ($reservations as $reservation)
       <tr class="{{$reservation->status}}">
-        <td>{{ date_format( new DateTime($reservation->start_time), 'h:ia') }} </td>
-        <td>{{ date_format( new DateTime($reservation->end_time), 'h:ia') }}</td>
+        <td>{{ date_format( new DateTime($reservation->start_time), 'g:ia') }} </td>
+        <td>{{ date_format( new DateTime($reservation->end_time), 'g:ia') }}</td>
         <td><a href="/tables/{{$reservation->table->id}}">{{$reservation->table->name}}</a></td>
         <td><a href="/guests/{{$reservation->guest->id}}">{{$reservation->guest->name}}</a></td>
         <td>{{$reservation->party_size}}</td>
@@ -84,64 +87,27 @@
     </table>
   </div>
   <div>
-
-    <table class="table text-center" id="schedule">
+    <table class="table text-center" >
+      <!-- table's first row/header -->
       <tr>
-        <td>
-          Table (Max Seats)
-        </td>
-        @foreach($tables as $table)
-        <td>
-         {{ $table->id}} ({{$table->seats}})
-        </td>
-        @endforeach
+        <td>Table (Max Seats)</td>
+        <!--  header for tables -->
+        @for($t = 1;$t < sizeof($reservationSlots); $t++)
+          <td>{{$reservationSlots[$t][0]['name']}} ({{$reservationSlots[$t][0]['seats']}})</td>
+        @endfor
       </tr>
-      @for( $i=9; $i<21 ; $i++ )
-
+      <!-- iterate through each row -->
+      @for($h = 1;$h < sizeof($reservationSlots[0]); $h++)
       <tr>
-        <td>
-          {{ ($i > 12)? sprintf("%'.02d\n", ($i-12) ) . ":00" : $i . ":00" }}
-          {{ ($i >= 12)? "PM" : "AM" }}
-        </td>
-        @foreach($tables as $table)
-          <td id='<?php printf("%'.02d", $i )?>00-{{$table->id}}'></td>
-        @endforeach
-      </tr>
-      <tr>
-        <td>
-          {{ ($i > 12)? sprintf("%'.02d\n", ($i-12) ) . ":30" : $i . ":30" }}
-          {{ ($i >= 12)? "PM" : "AM" }}
-        </td>
-        @foreach($tables as $table)
-          <td id='<?php printf("%'.02d", $i )?>30-{{$table->id}}'></td>
-        @endforeach
+        <!-- col for time -->
+        <td>{{date_create($reservationSlots[0][$h])->format('g:ia')}}</td>
+        <!--  iterate through table reservations if taken for this time slot-->
+        @for($t = 1;$t < sizeof($reservationSlots); $t++)
+          <td <?php if($reservationSlots[$t][$h]){echo 'class="slot-taken"';} ?> ></td>
+        @endfor
       </tr>
       @endfor
     </table>
   </div>
 
-@endsection
-
-@section('scripts')
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    @foreach($reservations as $reservation)
-    //while start time <= end time
-      <?php
-        $start_time = new DateTime($reservation->start_time);
-        $end_time = new DateTime($reservation->end_time);
-      ?>
-
-      @while ($start_time < $end_time )
-       <?php $cell = $start_time->format('Hi') . '-' . $reservation->table_id  ?>
-       $("#{{$cell}}").css('background', 'red');
-       <?php $start_time->add(new DateInterval('PT30M')) ?>;
-      @endwhile
-    @endforeach
-
-  });
-
-
-
-</script>
 @endsection

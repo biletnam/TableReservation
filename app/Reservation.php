@@ -22,7 +22,15 @@ class Reservation extends Model
       return $this->hasOne(Table::class, 'id');
   }
 
-  public static function findAvailableReservations($date, $party_size = 0){
+  /**
+   * Retrieve a '2D' nested array with available reservation slots
+   *
+   * @param  string $Database format('Y-m-d')
+   * @param  int $party_size
+   * @return mixed array
+   */
+
+  public static function getAvailableReservations($date, $party_size = 0){
 
     $reservation_schedule = [];
 
@@ -65,14 +73,14 @@ class Reservation extends Model
           $key = array_search(date_create($hourArray[$i])->format('H:i'), array_column($reservationsForTable,'open'));
 
         //  var_dump($reservationsForTable[$key]['close']);
-         while( date_create($reservationsForTable[$key]['close']) > date_create($hourArray[$i])){
-           array_push($temp, true);
-           $i++;
-         }
+          while( date_create($reservationsForTable[$key]['close']) > date_create($hourArray[$i])){
+            array_push($temp, true);
+            $i++;
+          }
         }
-        else{
-          array_push($temp, false);
-        }
+
+        array_push($temp, false);
+
       }
       array_push($reservation_schedule, $temp);
     }

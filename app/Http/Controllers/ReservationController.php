@@ -291,10 +291,11 @@ class ReservationController extends Controller
     }
 
     return view('reservation/by_date', [
+      'reservationSlots' => Reservation::getAvailableReservations($date->format('Y-m-d')),
       'reservations' => $reservations,
-      'tables' => Table::orderBy('seats', 'ASC')->get(),
+      // 'tables' => Table::orderBy('seats', 'ASC')->get(),
       'date' => $date->format('M d, Y'),
-      'hours'=> $hours
+      // 'hours'=> $hours
     ]);
   }
   public function removeOld(){
