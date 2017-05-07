@@ -15,8 +15,11 @@ class DatabaseSeeder extends Seeder
       //factory(App\Guest::class, 3)->create();
       factory(App\Reservation::class, 8)->create();
       //factory(App\Hours::class, 7)->create();
+
+      //create default roles
       $role = App\Role::create(['name'=>'admin']);
       App\Role::create(['name'=>'staff']);
+      //create default admin login
       $user = App\User::create([
         'name'=>'admin',
         'email'=>'admin@localhost',
@@ -28,6 +31,8 @@ class DatabaseSeeder extends Seeder
         'created_at'=>date_create('now'),
         'updated_at'=>date_create('now')
       ]);
+
+      //create default hours of openssl_get_cert_locations
       App\Hours::create(['day'=>'0', 'open'=>'09:00:00', 'close'=>'21:00:00']);
       App\Hours::create(['day'=>'2', 'open'=>'09:00:00', 'close'=>'21:00:00']);
       App\Hours::create(['day'=>'1', 'open'=>'00:00:00', 'close'=>'00:00:00', 'opened'=>false]);
