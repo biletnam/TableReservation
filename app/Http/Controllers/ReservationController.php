@@ -39,45 +39,9 @@ class ReservationController extends Controller
         $reservation->$guest = $guest;
       }
     }
-
-  //  print('<pre>');
-  //  var_dump($reservations);
     return view('reservation/index', ['reservations' => $reservations]);
   }
 
-  public function selectDate(Request $request)
-  {
-    if (!isset($request->date)){
-      return view('reservation/add_selectDate');
-    }
-
-    $today = new DateTime();
-    $start = new DateTime($request->date);
-    $end = new DateTime($request->date);
-    $end->add(new DateInterval('P1D'));
-
-    $reservations = Reservation::whereRaw('start_time >= ? AND end_time < ? ORDER BY start_time ASC', [
-      $start->format('Y-m-d'), $end->format('Y-m-d')
-    ])->get();
-
-    $hours = Hours::where('day',$start->format('w'))->first();
-    if($hours->opened){
-      $hours->open = date_create($hours->open)->format('H') ;
-      $hours->close = date_create($hours->close)->format('H');
-    }else{
-      $hours->open = 0 ;
-      $hours->close = 0;
-    }
-
-
-    return view('reservation/add_selectDate', [
-      'tables'=>Table::orderBy('seats', 'ASC')->get(),
-      'reservations'=>$reservations,
-      'date'=>$start,
-      'party'=>isset($request->party)? $request->party: 0,
-      'hours'=>$hours
-    ]);
-  }
   /**
    * Show the form for creating a new resource.
    *
@@ -264,6 +228,12 @@ class ReservationController extends Controller
     return view('reservation/calendar', ['reservations' => $reservations]);
 
   }
+  /**
+   * show all reservations in a day-view for given date
+   *
+   * @param string date in format('Y-m-d')
+   * @return \Illuminate\Http\Responses
+   */
   public function reservationByDate($date){
     //list reservations for single date
 
@@ -281,23 +251,44 @@ class ReservationController extends Controller
       }
     }
 
-    $hours = Hours::where('day',$date->format('w'))->first();
-    if($hours->opened){
-      $hours->open = date_create($hours->open)->format('H') ;
-      $hours->close = date_create($hours->close)->format('H');
-    }else{
-      $hours->open = 0;
-      $hours->close = 0;
-    }
-
     return view('reservation/by_date', [
       'reservationSlots' => Reservation::getAvailableReservations($date->format('Y-m-d')),
       'reservations' => $reservations,
-      // 'tables' => Table::orderBy('seats', 'ASC')->get(),
-      'date' => $date->format('M d, Y'),
-      // 'hours'=> $hours
+      'date' => $date->format('M d, Y')
     ]);
   }
+  /**
+   * show all avaliable reservation slots in a day-view for given date
+   *
+   * @param Request $date in string
+   * @return \Illuminate\Http\Responses
+   */
+  public function selectDate(Request $request)
+  {
+    if (!isset($request->date)){
+      return view('reservation/add_selectDate');
+    }
+
+    $party_size = (isset($request->party)?$request->party:0);
+    $date = new DateTime($request->date);
+
+    $reservations = Reservation::whereRaw('date = ? ORDER BY start_time ASC', [
+      $date->format('Y-m-d')
+    ])->get();
+
+
+    return view('reservation/add_selectDate', [
+      'reservationSlots' => Reservation::getAvailableReservations($date->format('Y-m-d'),$party_size),
+      'reservations'=>$reservations,
+      'date'=>$date,
+      'party'=>$party_size
+    ]);
+  }
+  /**
+   * Remove all past reservations
+   *
+   * @return \Illuminate\Http\Responses
+   */
   public function removeOld(){
     $date = new DateTime();
     $result = DB::table('reservations')->where('date', '<', $date->format('Y-m-d'))->delete();
@@ -307,6 +298,12 @@ class ReservationController extends Controller
       'status'=>'success'
     ]);
   }
+  /**
+   * change status of reservation to confirmed
+   *
+   * @param reservation id
+   * @return \Illuminate\Http\Responses
+   */
   public function confirm($id){
     $reservation = Reservation::find($id);
     $reservation->status = 'confirmed';

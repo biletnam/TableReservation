@@ -5,7 +5,7 @@
 @section('head')
 <link rel="stylesheet" href="/css/jquery-ui.min.css">
 <style>
-  .taken{
+  .slot-taken{
     background-color: red;
   }
   .toosmall{
@@ -42,85 +42,53 @@
 </div>
 {!! Form::close() !!}
 
-@if(isset($date))
+@if(isset($date, $reservationSlots[1]))
 
   <h3>Availiablity for {{ $date->format('M d, Y') }}</h3>
-  <table class="table text-center" id="schedule">
+  <table class="table text-center" >
+    <!-- table's first row/header -->
     <tr>
-      <td>
-        Table (Max Seats)
-      </td>
-      @foreach($tables as $table)
-      <td>
-       {{ $table->id}} ({{$table->seats}})
-      </td>
-      @endforeach
+      <td>Table (Max Seats)</td>
+      <!--  header for tables -->
+      @for($t = 1;$t < sizeof($reservationSlots); $t++)
+        <td>{{$reservationSlots[$t][0]['name']}} ({{$reservationSlots[$t][0]['seats']}})</td>
+      @endfor
     </tr>
-    @for( $i=$hours->open; $i<$hours->close ; $i++ )
-
+    <!-- iterate through each row -->
+    @for($h = 1;$h < sizeof($reservationSlots[0]); $h++)
     <tr>
-      <td>
-        {{ ($i > 12)? sprintf("%'.02d\n", ($i-12) ) . ":00" : $i . ":00" }}
-        {{ ($i >= 12)? "PM" : "AM" }}
-      </td>
-      @foreach($tables as $table)
-        <td id='<?php printf("%'.02d", $i )?>00-{{$table->id}}'
-          class='{{ ($party > $table->seats )? 'toosmall' : 'available' }}  '>
-        </td>
-      @endforeach
-    </tr>
-    <tr>
-      <td>
-        {{ ($i > 12)? sprintf("%'.02d\n", ($i-12) ) . ":30" : $i . ":30" }}
-        {{ ($i >= 12)? "PM" : "AM" }}
-      </td>
-      @foreach($tables as $table)
-        <td id='<?php printf("%'.02d", $i )?>30-{{$table->id}}'
-          class='{{ ($party > $table->seats )? 'toosmall' : 'available' }}  '>
-        </td>
-      @endforeach
+      <!-- col for time -->
+      <td>{{date_create($reservationSlots[0][$h])->format('g:ia')}}</td>
+      <!--  iterate through table reservations if taken for this time slot-->
+      @for($t = 1;$t < sizeof($reservationSlots); $t++)
+      <?php
+        $url = "/reservations/create/" . $date->format('Y-m-d') . "/" . $party . "/" .
+          date_create($reservationSlots[0][$h])->format('Hi') . "-" . $reservationSlots[$t][0]['id'] ;
+      ?>
+        @if($reservationSlots[$t][$h])
+          <td class="slot-taken"></td>
+        @else
+          <td class='available'><a href="{{$url}}"><span class="glyphicon glyphicon-plus"></span></a></td>
+        @endif
+      @endfor
     </tr>
     @endfor
   </table>
+@else
+  <p class="bg-warning text-center">
+    <span class="glyphicon glyphicon-alert"></span> No results for this search. Please adjust request
+  </p>
+
 @endif
 @endsection
 
 @section('scripts')
   <script src="/js/jquery-ui.min.js"></script>
-<script>
-
+  <script>
   document.addEventListener("DOMContentLoaded", function() {
     $( function() {
       $( "#datepicker" ).datepicker();
     } );
-
-    @if(isset($reservations))
-      @foreach($reservations as $reservation)
-      //while start time <= end time
-        <?php
-          $start_time = new DateTime($reservation->start_time);
-          $end_time = new DateTime($reservation->end_time);
-        ?>
-        @while ($start_time < $end_time )
-         <?php $cell = $start_time->format('Hi') . '-' . $reservation->table_id  ?>
-         $("#{{$cell}}").removeClass().addClass('taken');
-         <?php $start_time->add(new DateInterval('PT30M')) ?>;
-        @endwhile
-      @endforeach
-
-      //set url for available reservations
-      $('.available').each(function(){
-        var url = '/reservations/create/{{$date->format("Y-m-d")}}/{{$party}}/' + this.id;
-        $(this).append('<a href="' + url + '"> ' +
-          '<span class="glyphicon glyphicon-plus"></span>' +
-        '</a>');
-      });
-    @endif
-
-
-
   });
-
-</script>
-
+  </script>
 @endsection
