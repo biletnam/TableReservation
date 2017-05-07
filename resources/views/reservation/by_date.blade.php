@@ -6,17 +6,21 @@
 <style>
   .seated{
     text-decoration: line-through;
+    border:1px solid white;
   }
   .released{
     color:red;
     text-decoration: line-through;
+    border:1px solid white;
   }
   .checked-in{
     color:green;
     font-weight: bolder;
+    border:1px solid white;
   }
   .slot-taken{
     background:red;
+    border:1px solid white;
   }
 </style>
 @endsection

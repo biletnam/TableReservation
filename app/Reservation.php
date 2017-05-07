@@ -65,7 +65,9 @@ class Reservation extends Model
       // var_dump("<pre>",$reservationsForTable,"</pre>");
 
       $temp = [$table->toArray()];
-      for($i=1; $i < sizeof($hourArray); $i++ ){
+      $i = 1;
+      while($i < sizeof($hourArray)){
+      // for($i=1; $i < sizeof($hourArray); $i++ ){
       // print( date_create($hourArray[$i])->format('H:i') . "<br/>");
       // var_dump(array_column($reservationsForTable,'open'));
 
@@ -78,9 +80,10 @@ class Reservation extends Model
             $i++;
           }
         }
-
-        array_push($temp, false);
-
+        else{
+          array_push($temp, false);
+          $i++;
+        }
       }
       array_push($reservation_schedule, $temp);
     }
