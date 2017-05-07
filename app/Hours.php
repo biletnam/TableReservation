@@ -18,4 +18,10 @@ class Hours extends Model
         '6'=>'Saturday'
       ];
     }
+    public static function getHoursOfOperationsByDate($date){
+      $day = date_create($date);
+      $hoursOpen = Hours::where('day', $day->format('w'))->firstOrFail();
+      //var_dump("<pre>", $hoursOpen->toArray(), "</pre>");
+      return $hoursOpen;
+    }
 }
