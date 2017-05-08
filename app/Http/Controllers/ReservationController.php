@@ -75,6 +75,7 @@ class ReservationController extends Controller
    */
   public function store(Request $request)
   {
+
     if(!isset($request->table_id, $request->party,
       $request->start_time, $request->end_time,
       $request->customer_name, $request->customer_phone) ){
@@ -93,6 +94,25 @@ class ReservationController extends Controller
         'status'=>'error'
       ]);
     }
+
+    //verify if reservation is occupied
+    $date = date_create($request->date);
+    //start time taken
+    $validation1 = Reservation::whereRaw('date = ? AND start_time >= ? AND ? <= end_time AND table_id = ?', [
+      $start_time->format('Y-m-d'), $start_time->format('Y-m-d H:i:s'), $start_time->format('Y-m-d H:i:s'), $request->table_id
+    ])->get();
+    //end time taken
+    $validation2 = Reservation::whereRaw('date = ? AND start_time >= ? AND ? <= end_time AND table_id = ?', [
+      $end_time->format('Y-m-d'), $end_time->format('Y-m-d H:i:s'), $end_time->format('Y-m-d H:i:s'), $request->table_id
+    ])->get();
+    if(sizeof($validation1)> 0 || sizeof($validation2)>0){
+      return view('layouts.results', [
+        'redirect' => '/reservations',
+        'msg'=>'This reservation conflicts with an existing reservation',
+        'status'=>'error'
+      ]);
+    }
+
     $guest = new Guest;
     $guest->name = $request->customer_name;
     $guest->phone = $request->customer_phone;

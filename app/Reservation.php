@@ -53,8 +53,6 @@ class Reservation extends Model
     foreach ($tables as $table) {
       $reservationsForTable = [];
       foreach ($reservations as $reserv) {
-        // echo "<br/>table->id:" . $table->id;
-        // echo "<br/>reserv->table_id:" . $reserv->table_id;
         if($reserv->table_id == $table->id){
           array_push($reservationsForTable, [
             "open"=>date_create($reserv->start_time)->format("H:i"),
@@ -62,20 +60,15 @@ class Reservation extends Model
           ]);
         }
       }
-      // var_dump("<pre>",$reservationsForTable,"</pre>");
 
       $temp = [$table->toArray()];
       $i = 1;
       while($i < sizeof($hourArray)){
-      // for($i=1; $i < sizeof($hourArray); $i++ ){
-      // print( date_create($hourArray[$i])->format('H:i') . "<br/>");
-      // var_dump(array_column($reservationsForTable,'open'));
-
         if(in_array(date_create($hourArray[$i])->format('H:i'), array_column($reservationsForTable,'open'))){
           $key = array_search(date_create($hourArray[$i])->format('H:i'), array_column($reservationsForTable,'open'));
 
-        //  var_dump($reservationsForTable[$key]['close']);
-          while( date_create($reservationsForTable[$key]['close']) > date_create($hourArray[$i])){
+          while( $i < sizeof($hourArray)
+          && date_create($reservationsForTable[$key]['close']) > date_create($hourArray[$i]) ){
             array_push($temp, true);
             $i++;
           }
@@ -87,7 +80,6 @@ class Reservation extends Model
       }
       array_push($reservation_schedule, $temp);
     }
-
 
     // var_dump("<pre>", $reservation_schedule, "</pre>");
     return $reservation_schedule;
