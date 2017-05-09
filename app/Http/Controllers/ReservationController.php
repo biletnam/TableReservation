@@ -36,7 +36,7 @@ class ReservationController extends Controller
       $guest = Guest::find($reservation->guest_id);
       if(isset($table) && isset($guest)){
         $reservation->table = $table;
-        $reservation->$guest = $guest;
+        $reservation->guest = $guest;
       }
     }
     return view('reservation/index', ['reservations' => $reservations]);
@@ -267,7 +267,7 @@ class ReservationController extends Controller
       $guest = Guest::find($reservation->guest_id);
       if(isset($table) && isset($guest)){
         $reservation->table = $table;
-        $reservation->$guest = $guest;
+        $reservation->guest = $guest;
       }
     }
 
