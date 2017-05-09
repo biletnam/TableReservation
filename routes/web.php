@@ -12,8 +12,13 @@
 */
 
 Route::get('/', function () {
-    return redirect('/login');
+    return view('public/main');
 });
+Route::get('/find', 'PublicController@find');
+Route::get('/reserve', function(){
+  return view('public/reserve');
+});
+Route::post('/confirm', 'PublicController@confirm');
 
 //------------------------------------------------------
 Route::resource('tables', 'TableController');
