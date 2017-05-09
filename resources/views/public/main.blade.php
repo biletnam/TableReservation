@@ -20,14 +20,14 @@
   <div class="form-group">
     {!! Form::label('datepicker', 'Date:', ['class'=> 'col-xs-4 control-label']) !!}
     <div class="col-xs-8 col-sm-4">
-      {!! Form::text('date', $date_f, ['class' => 'form-control', 'id'=>'datepicker']) !!}
+      {!! Form::text('date', $date_f, ['class' => 'form-control', 'id'=>'datepicker', 'required' => 'required']) !!}
     </div>
   </div>
   <div class="form-group">
 
     {!! Form::label('party', 'Party Size:', ['class'=> 'col-xs-4 control-label']) !!}
     <div class="col-xs-8  col-sm-4">
-      {!! Form::number('party', (isset($_GET['party'])? $_GET['party'] : null), ['class' => 'form-control']) !!}
+      {!! Form::number('party', (isset($_GET['party'])? $_GET['party'] : null), ['class' => 'form-control', 'required' => 'required']) !!}
     </div>
   </div>
   <div class="form-group">

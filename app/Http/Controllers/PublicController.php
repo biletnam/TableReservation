@@ -71,7 +71,7 @@ class PublicController extends Controller
       if(sizeof($validation1)> 0 || sizeof($validation2)>0){
         return view('layouts.results', [
           'redirect' => '/reservations',
-          'msg'=>'This reservation conflicts with an existing reservation',
+          'msg'=>'This reservation conflicts with an existing reservation for the same party size. Try requesting for +1 current party size or a different time.',
           'status'=>'error'
         ]);
       }
